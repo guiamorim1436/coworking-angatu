@@ -17,14 +17,15 @@ import {
   ChevronRight,
   ExternalLink,
   Award,
+  ArrowRight,
   ArrowUpRight
 } from 'lucide-react';
 
-import WalkthroughScroll from './components/WalkthroughScroll';
 import PricingCalculator from './components/PricingCalculator';
 
 export default function App() {
   const [activeFaq, setActiveFaq] = useState(null);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   const WHATSAPP_URL = "https://wa.me/5531997141515?text=" + encodeURIComponent("Olá! Gostaria de agendar uma visita ao Coworking Pediátrico Angatu no Gutierrez para conhecer os turnos disponíveis.");
 
@@ -73,7 +74,7 @@ export default function App() {
       a: "O espaço foi projetado especificamente para a assistência materno-infantil: Pediatria Geral, Odontopediatria, Fonoaudiologia Infantil, Psicopedagogia, Psicologia Infantil, Nutrição Pediátrica, Fisioterapia Infantil e neuropediatria."
     },
     {
-      q: "Qual é o valor do aluguel e como funciona a promoção de inauguração?",
+      q: "Qual é o valor do aluguel e como funciona a promoção de boas-vindas?",
       a: "Nos dois primeiros meses, você conta com a condição especial de boas-vindas por R$ 500,00/mês por turno. A partir do 3º mês, o valor passa para R$ 1.000,00/mês por turno. Esse valor contempla secretária dedicada, internet Wi-Fi de alta velocidade, condomínio, luz, água e limpeza diária com descartáveis."
     },
     {
@@ -97,23 +98,180 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#19201D] font-sans selection:bg-[#4A7C59] selection:text-white">
 
-      {/* 1. O SITE JÁ INICIA COM O TOUR EM TELA CHEIA (SEM MENU / SEM CABEÇALHO) */}
-      <div id="tour-hero">
-        <WalkthroughScroll />
+      {/* Top Banner Promo */}
+      <div className="bg-[#1E3F35] text-white py-2.5 px-4 text-xs md:text-sm font-medium">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="w-2 h-2 rounded-full bg-[#88B04B] animate-ping" />
+            <span className="font-semibold text-[#88B04B]">Condição Especial de Boas-Vindas:</span>
+            <span className="hidden sm:inline">2 Primeiros Meses por <strong>R$ 500/mês por turno</strong> (depois R$ 1.000/mês).</span>
+            <span className="sm:hidden">R$ 500/mês nos 2 primeiros meses.</span>
+          </div>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-1 underline hover:text-[#88B04B] transition-colors"
+          >
+            <span>Ver Turnos Livres</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </a>
+        </div>
       </div>
 
-      {/* 2. TRANSIÇÃO PÓS-TOUR: APRESENTAÇÃO E IDENTIFICAÇÃO DOS DOIS PÚBLICOS */}
-      <section className="py-20 bg-white border-b border-[#E2DBCF]">
+      {/* Main Navbar */}
+      <header className="sticky top-0 z-40 bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#E2DBCF]/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-[#1E3F35] flex items-center justify-center text-white shadow-md">
+              <Baby className="w-6 h-6 text-[#88B04B]" />
+            </div>
+            <div>
+              <div className="text-xl font-display font-extrabold text-[#1E3F35] tracking-tight">
+                ANGATU
+              </div>
+              <div className="text-[10px] uppercase font-bold tracking-widest text-[#4A7C59]">
+                Coworking Pediátrico
+              </div>
+            </div>
+          </div>
+
+          <nav className="hidden lg:flex items-center space-x-8 text-sm font-medium text-[#4A5568]">
+            <a href="#diferenciais" className="hover:text-[#1E3F35] transition-colors">Diferenciais</a>
+            <a href="#secretaria" className="hover:text-[#1E3F35] transition-colors">Secretária Dedicada</a>
+            <a href="#galeria" className="hover:text-[#1E3F35] transition-colors">Ambientes 25m²</a>
+            <a href="#simulador" className="hover:text-[#1E3F35] transition-colors">Valores</a>
+            <a href="#faq" className="hover:text-[#1E3F35] transition-colors">Dúvidas</a>
+          </nav>
+
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center space-x-2 bg-[#4A7C59] hover:bg-[#2A573F] text-white px-5 py-2.5 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>Agendar Visita</span>
+          </a>
+        </div>
+      </header>
+
+      {/* Hero Section Premium (Sem Vídeo, Puro Design & Fotografia) */}
+      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#E5EDE7] text-[#1E3F35] text-xs font-bold uppercase tracking-wider">
+                <MapPin className="w-3.5 h-3.5 text-[#4A7C59]" />
+                <span>Gutierrez • Belo Horizonte • Av. do Contorno c/ Raja</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-[#1E3F35] leading-[1.12] tracking-tight">
+                Seu consultório pediátrico pronto, com secretária dedicada e zero dor de cabeça de gestão.
+              </h1>
+
+              <p className="text-base sm:text-lg text-[#4A5568] leading-relaxed max-w-2xl">
+                Consultório amplo de <strong>25 m² com luz natural e banheiro privativo</strong>, sala de espera lúdica temática safári e suporte de secretária com acolhimento humanizado para mães e crianças. Chegue apenas com seu jaleco e estetoscópio; nós cuidamos de toda a operação.
+              </p>
+
+              {/* Highlights List */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="flex items-center space-x-2 text-sm text-[#2A573F]">
+                  <CheckCircle className="w-4 h-4 text-[#4A7C59] shrink-0" />
+                  <span><strong>Secretária dedicada:</strong> confirmação ativa anti-falta</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-[#2A573F]">
+                  <CheckCircle className="w-4 h-4 text-[#4A7C59] shrink-0" />
+                  <span><strong>Sala de espera 25 m²:</strong> espaço kids e fraldário</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-[#2A573F]">
+                  <CheckCircle className="w-4 h-4 text-[#4A7C59] shrink-0" />
+                  <span><strong>Banheiro privativo</strong> exclusivo dentro do consultório</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-[#2A573F]">
+                  <CheckCircle className="w-4 h-4 text-[#4A7C59] shrink-0" />
+                  <span><strong>Sem condomínio,</strong> sem IPTU ou encargos CLT</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#1E3F35] hover:bg-[#132822] text-white px-8 py-4 rounded-xl font-bold text-center flex items-center justify-center space-x-2 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5"
+                >
+                  <MessageCircle className="w-5 h-5 text-[#88B04B]" />
+                  <span>Agendar Visita no WhatsApp</span>
+                </a>
+                <a
+                  href="#simulador"
+                  className="bg-white hover:bg-[#F0ECE1] text-[#1E3F35] border border-[#E2DBCF] px-6 py-4 rounded-xl font-semibold text-center flex items-center justify-center space-x-2 transition-all"
+                >
+                  <span>Simular Meus Turnos</span>
+                  <ChevronRight className="w-4 h-4" />
+                </a>
+              </div>
+
+              <div className="pt-4 border-t border-[#E2DBCF]/80 flex flex-wrap items-center gap-6 text-xs text-[#4A5568]">
+                <div className="flex items-center space-x-1.5">
+                  <Award className="w-4 h-4 text-[#C48B54]" />
+                  <span>Ideal para Recém-Formados & Médicos Experientes</span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                  <Building2 className="w-4 h-4 text-[#4A7C59]" />
+                  <span>Estacionamento Rotativo no Prédio</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Hero Visual Card with High-Res Photo */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/5] max-h-[560px] w-full">
+                <img
+                  src="/photos/recepcao_safari_kids.webp"
+                  alt="Recepção Pediátrica Angatu no Gutierrez"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#19201D]/90 via-transparent to-transparent" />
+                
+                {/* Floating pill badge */}
+                <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold text-[#1E3F35] shadow-lg flex items-center space-x-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C48B54]" />
+                  <span>Gutierrez • BH</span>
+                </div>
+
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <div className="text-xs uppercase tracking-widest text-[#88B04B] font-bold mb-1">
+                    Ambiente Safári & Lúdico
+                  </div>
+                  <h3 className="text-xl font-display font-bold leading-snug">
+                    A calma que a família precisa para uma consulta de excelência.
+                  </h3>
+                  <p className="text-xs text-[#C9DBCF] mt-1">
+                    25 m² climatizados, espaço kids e fraldário completo.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Target Audiences: Recém-Formados vs. Médicos Experientes */}
+      <section id="diferenciais" className="py-20 bg-white border-y border-[#E2DBCF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-bold uppercase tracking-widest text-[#4A7C59] mb-2 block">
               Posicionamento Inteligente
             </span>
             <h2 className="text-3xl md:text-5xl font-display font-extrabold text-[#1E3F35] tracking-tight">
-              Você se formou para cuidar de crianças, não para gerenciar reformas e condomínios.
+              Você se formou para cuidar de crianças, não para ser síndico ou gestor de reformas.
             </h2>
             <p className="text-[#4A5568] mt-4 text-base md:text-lg leading-relaxed">
-              Montar e manter uma clínica própria em Belo Horizonte virou um ralo de energia e capital. O Angatu no Gutierrez foi desenhado para eliminar toda a burocracia:
+              Montar e manter uma clínica em Belo Horizonte virou um ralo de energia e capital. O Angatu resolve exatamente as dores de dois momentos da carreira:
             </p>
           </div>
 
@@ -123,12 +281,12 @@ export default function App() {
               <div className="w-12 h-12 rounded-2xl bg-[#E5EDE7] flex items-center justify-center text-[#1E3F35] mb-5">
                 <Stethoscope className="w-6 h-6 text-[#4A7C59]" />
               </div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#4A7C59] mb-1">Público 01</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#4A7C59] mb-1">Perfil 01</div>
               <h3 className="text-2xl font-display font-bold text-[#1E3F35] mb-3">
                 Recém-Saído da Residência ou Especialização
               </h3>
               <p className="text-sm font-semibold text-[#C48B54] mb-4">
-                "Quero começar a atender no particular imediatamente, com risco mínimo e custo previsível."
+                "Quero começar a atender no particular imediatamente, mas sem dar um salto no escuro financeiro."
               </p>
               <ul className="space-y-3 text-sm text-[#4A5568]">
                 <li className="flex items-start space-x-2">
@@ -151,12 +309,12 @@ export default function App() {
               <div className="w-12 h-12 rounded-2xl bg-[#F0ECE1] flex items-center justify-center text-[#1E3F35] mb-5">
                 <Building2 className="w-6 h-6 text-[#C48B54]" />
               </div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#C48B54] mb-1">Público 02</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#C48B54] mb-1">Perfil 02</div>
               <h3 className="text-2xl font-display font-bold text-[#1E3F35] mb-3">
                 Médico ou Especialista Já Experiente
               </h3>
               <p className="text-sm font-semibold text-[#4A7C59] mb-4">
-                "Tenho minha base de pacientes, mas cansei do estresse e da dor de cabeça do consultório próprio."
+                "Tenho minha base de pacientes, mas cansei do estresse e do custo fixo de manter consultório próprio."
               </p>
               <ul className="space-y-3 text-sm text-[#4A5568]">
                 <li className="flex items-start space-x-2">
@@ -177,8 +335,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. O GRANDE DIFERENCIAL: A SECRETÁRIA DEDICADA */}
-      <section className="py-20 bg-[#1E3F35] text-white">
+      {/* O Grande Diferencial: A Secretária Dedicada */}
+      <section id="secretaria" className="py-20 bg-[#1E3F35] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -255,8 +413,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* 4. GALERIA DE FOTOS DOS AMBIENTES */}
-      <section className="py-20 bg-[#FAF8F5]">
+      {/* Galeria de Fotos dos Ambientes */}
+      <section id="galeria" className="py-20 bg-[#FAF8F5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-bold uppercase tracking-widest text-[#4A7C59] mb-2 block">
@@ -275,7 +433,8 @@ export default function App() {
             {photos.map((item, idx) => (
               <div
                 key={idx}
-                className="group relative bg-white rounded-3xl overflow-hidden border border-[#E2DBCF] shadow-sm hover:shadow-xl transition-all duration-300"
+                onClick={() => setSelectedPhoto(item)}
+                className="group relative bg-white rounded-3xl overflow-hidden border border-[#E2DBCF] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
                 <div className="aspect-[4/3] overflow-hidden bg-[#E5EDE7]">
                   <img
@@ -301,14 +460,41 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5. CALCULADORA DE VALORES (R$ 500 PROMO / R$ 1.000 REGULAR) */}
-      <section className="py-20 bg-[#F0ECE1]/60 border-y border-[#E2DBCF]">
+      {/* Lightbox Modal */}
+      {selectedPhoto && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div className="max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="relative aspect-[16/10] bg-black">
+              <img src={selectedPhoto.src} alt={selectedPhoto.title} className="w-full h-full object-contain" />
+              <button
+                onClick={() => setSelectedPhoto(null)}
+                className="absolute top-4 right-4 bg-black/60 hover:bg-black text-white w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-6 bg-white">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#4A7C59] block mb-1">
+                {selectedPhoto.category}
+              </span>
+              <h3 className="text-xl font-display font-bold text-[#1E3F35]">{selectedPhoto.title}</h3>
+              <p className="text-sm text-[#4A5568] mt-1">{selectedPhoto.desc}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Calculadora de Valores (R$ 500 promo / R$ 1.000 regular) */}
+      <section id="simulador" className="py-20 bg-[#F0ECE1]/60 border-y border-[#E2DBCF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <PricingCalculator />
         </div>
       </section>
 
-      {/* 6. GRADE COMPLETA DE EQUIPAMENTOS */}
+      {/* Grade Completa de Equipamentos */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
@@ -386,8 +572,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* 7. FAQ ACCORDION */}
-      <section className="py-20 bg-[#FAF8F5]">
+      {/* FAQ Accordion */}
+      <section id="faq" className="py-20 bg-[#FAF8F5]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-[#4A7C59] block mb-2">
@@ -424,7 +610,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 8. CTA FINAL & INFORMAÇÕES */}
+      {/* CTA Final & Localização */}
       <section className="py-20 bg-[#1E3F35] text-white relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <span className="px-3 py-1 rounded-full bg-[#4A7C59]/40 text-[#88B04B] text-xs font-bold uppercase tracking-wider mb-4 inline-block">
