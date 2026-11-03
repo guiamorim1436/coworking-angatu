@@ -91,9 +91,9 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-[#FDFBF7] text-[#1A2621] font-sans antialiased selection:bg-[#284B3D] selection:text-white">
 
-      {/* Header Minimalista (Sem "Contorno c/ Raja", Sem "Gutierrez" na logo, Sem botão Agendar Visita) */}
+      {/* Header Minimalista */}
       <header className="w-full border-b border-[#EAE3D6]/70 bg-[#FDFBF7]/90 backdrop-blur-md sticky top-0 z-40">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 h-24 flex items-center justify-between">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 h-20 md:h-24 flex items-center justify-between">
           <div className="flex flex-col">
             <span className="font-display text-2xl sm:text-3xl font-semibold tracking-[0.24em] text-[#1C362B] uppercase">
               ANGATU
@@ -102,18 +102,6 @@ export default function App() {
               Coworking Pediátrico
             </span>
           </div>
-
-          {/* Endereço clicável direto no header */}
-          <a
-            href={GOOGLE_MAPS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center text-xs tracking-wider text-[#68776F] hover:text-[#1C362B] transition-colors"
-          >
-            <MapPin className="w-3.5 h-3.5 text-[#A67C52] mr-1.5 shrink-0" />
-            <span className="hidden sm:inline">Gutierrez, Belo Horizonte</span>
-            <span className="sm:hidden">BH</span>
-          </a>
         </div>
       </header>
 
