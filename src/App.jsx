@@ -41,43 +41,43 @@ export default function App() {
   const GOOGLE_MAPS_URL = "https://www.google.com/maps/search/?api=1&query=R.+Herculano+de+Freitas,+58+-+Sl+407+-+Gutierrez,+Belo+Horizonte+-+MG,+30441-039";
   const ADDRESS_TEXT = "R. Herculano de Freitas, 58 - Sl 407 - Gutierrez, Belo Horizonte - MG, 30441-039";
 
-  // Gallery spaces with inverted order (Atendimento & Secretária in 2nd, Consultório Principal in 6th)
+  // Gallery spaces sincronizados com as fotos reais
   const spaces = [
     {
-      src: "/photos/recepcao_safari_kids.webp",
-      title: "Recepção Safári & Espaço Kids",
-      tag: "25 m² • Espera Acolhedora",
-      desc: "Arquitetura lúdica com climatização, brinquedoteca e fraldário estruturado."
+      src: "/photos/consultorio_principal_geral.webp",
+      title: "Consultório Pediátrico Principal",
+      tag: "25 m² • Amplo & Climatizado",
+      desc: "Visão integrada do consultório com maca pediátrica, mesa de atendimento e ambientação temática acolhedora."
     },
     {
-      src: "/photos/recepcao_hall.webp",
-      title: "Atendimento & Secretária",
-      tag: "Exclusividade",
-      desc: "Recepção personalizada para um único consultório em funcionamento."
+      src: "/photos/recepcao_secretaria.webp",
+      title: "Atendimento & Secretária Dedicada",
+      tag: "Exclusividade Angatu",
+      desc: "Recepção personalizada para um único consultório em funcionamento, com confirmação ativa e acolhimento humanizado."
     },
     {
-      src: "/photos/consultorio_mesa.webp",
-      title: "Ergonomia & Atendimento",
-      tag: "Conforto Médico",
-      desc: "Cadeira executiva Flexform e mesa espaçosa para acolher pais e crianças."
+      src: "/photos/consultorio_maca_exame.webp",
+      title: "Maca Pediátrica & Exame Clínico",
+      tag: "Estrutura Clínica Completa",
+      desc: "Maca acolchoada higienizada com papel descartável, balança digital infantil, escadinha de apoio e luz natural abundante."
     },
     {
-      src: "/photos/consultorio_maca.webp",
-      title: "Maca Pediátrica",
-      tag: "Estrutura Clínica",
-      desc: "Maca pediátrica higienizada, balança digital e Smart TV integrada."
+      src: "/photos/consultorio_mesa_medica.webp",
+      title: "Mesa Médica & Ergonomia",
+      tag: "Conforto para o Profissional",
+      desc: "Cadeira executiva Flexform, mesa ampla para acolher os pais e estante iluminada com livros e brinquedos."
     },
     {
-      src: "/photos/copa_conforto.webp",
-      title: "Copa Reservada",
-      tag: "Praticidade",
-      desc: "Espaço privativo com cafeteira, frigobar e micro-ondas para sua comodidade."
+      src: "/photos/sala_espera_kids.webp",
+      title: "Sala de Espera & Espaço Kids",
+      tag: "25 m² • Conforto Familiar",
+      desc: "Ambiente lúdico com mesinha infantil, fraldário completo e acomodação confortável para pais e acompanhantes."
     },
     {
-      src: "/photos/consultorio_visao_ampla.webp",
-      title: "Consultório Principal",
-      tag: "25 m² • Luz Natural",
-      desc: "Paredes em vidro, vista panorâmica e banheiro privativo para o médico."
+      src: "/photos/transicao_safari_ludico.webp",
+      title: "Ambiente Safári & Lúdico",
+      tag: "Arquitetura Sensorial",
+      desc: "Mural temático contemporâneo com leão, girafa e zebra que tranquiliza as famílias e encanta os pequenos pacientes."
     }
   ];
 
