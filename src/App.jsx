@@ -142,38 +142,35 @@ export default function App() {
       <section className="w-full pt-10 pb-16 md:pt-16 md:pb-24">
         <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
           
-          <div className="w-full flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-10 md:mb-14">
-            <div className="max-w-4xl">
-              <span className="text-xs uppercase tracking-[0.3em] font-semibold text-[#8C7A65] block mb-3">
-                Gutierrez • Belo Horizonte
-              </span>
+          {/* Bloco Hero Vertical */}
+          <div className="w-full max-w-4xl mb-12 md:mb-16">
+            <span className="text-xs uppercase tracking-[0.3em] font-semibold text-[#8C7A65] block mb-4">
+              Gutierrez • Belo Horizonte
+            </span>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-[4.2rem] font-display font-medium text-[#1C362B] leading-[1.08] tracking-[-0.02em]">
-                O consultório pediátrico em seu mais alto padrão.
-              </h1>
-            </div>
+            <h1 className="text-4xl sm:text-6xl lg:text-[4.8rem] font-display font-medium text-[#1C362B] leading-[1.08] tracking-[-0.02em]">
+              O consultório pediátrico em seu mais alto padrão.
+            </h1>
 
-            <div className="max-w-xl flex flex-col items-start lg:items-end justify-between">
-              <p className="text-base sm:text-lg text-[#53655C] font-light leading-relaxed lg:text-right">
-                25 m² de consultório privativo com luz natural, sala de espera lúdica e secretária dedicada aos seus pacientes. Traga apenas o seu jaleco.
-              </p>
+            <p className="mt-6 text-lg sm:text-xl text-[#53655C] font-light leading-relaxed max-w-2xl">
+              25 m² de consultório privativo com luz natural, sala de espera lúdica e secretária dedicada aos seus pacientes. Traga apenas o seu jaleco.
+            </p>
 
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-sm font-medium tracking-wide px-8 py-4 rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center space-x-2"
-                >
-                  <span>Agendar Visita</span>
-                  <ArrowRight className="w-4 h-4 text-[#C9AF96]" />
-                </button>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-sm font-medium tracking-wide px-8 py-4 rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center space-x-2"
+              >
+                <span>Agendar Visita</span>
+                <ArrowRight className="w-4 h-4 text-[#C9AF96]" />
+              </button>
 
-                <a
-                  href="#ambientes"
-                  className="text-sm font-medium text-[#53655C] hover:text-[#1C362B] px-6 py-4 rounded-full transition-colors"
-                >
-                  Ver Ambientes ↓
-                </a>
-              </div>
+              <a
+                href="#ambientes"
+                className="text-sm font-medium text-[#53655C] hover:text-[#1C362B] px-6 py-4 rounded-full transition-colors"
+              >
+                Ver Ambientes ↓
+              </a>
             </div>
           </div>
 
