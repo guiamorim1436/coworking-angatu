@@ -8,6 +8,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
+  Calculator,
+  TrendingUp,
   X
 } from 'lucide-react';
 
@@ -15,6 +17,19 @@ export default function App() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
   const [heroIndex, setHeroIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Profit Calculator State
+  const [consultaPrice, setConsultaPrice] = useState(400);
+  const [consultasPorTurno, setConsultasPorTurno] = useState(5);
+  const [turnosPorSemana, setTurnosPorSemana] = useState(2);
+
+  const consultasMensais = consultasPorTurno * turnosPorSemana * 4;
+  const faturamentoBruto = consultasMensais * consultaPrice;
+  const custoCoworkingRegular = turnosPorSemana * 1000;
+  const custoCoworkingPromo = turnosPorSemana * 500;
+  const lucroEstimado = faturamentoBruto - custoCoworkingRegular;
+  const margemLucro = faturamentoBruto > 0 ? Math.round((lucroEstimado / faturamentoBruto) * 100) : 0;
+  const economiaEstimada = Math.max(0, 9200 - custoCoworkingRegular);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -465,6 +480,194 @@ export default function App() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* Calculadora Interativa de Lucro & Retorno */}
+      <section id="calculadora" className="w-full py-20 md:py-28 bg-[#FDFBF7] border-t border-[#EAE3D6]">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+          
+          <div className="max-w-3xl mb-12">
+            <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8C7A65] block mb-2">
+              Planejamento Financeiro
+            </span>
+            <h2 className="text-3xl md:text-5xl font-display font-medium text-[#1C362B] tracking-tight">
+              Simulador de Lucro do Seu Consultório
+            </h2>
+            <p className="mt-3 text-base text-[#53655C] font-light leading-relaxed">
+              Descubra quanto você fatura atendendo no Angatu com secretária inclusa e compare com os custos de um consultório convencional.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {/* Controles de Simulação */}
+            <div className="lg:col-span-6 bg-white rounded-3xl p-8 md:p-10 border border-[#EAE3D6] shadow-sm space-y-8">
+              
+              {/* Valor da Consulta */}
+              <div>
+                <div className="flex justify-between items-baseline mb-2">
+                  <label className="text-sm font-semibold uppercase tracking-wider text-[#1C362B]">
+                    Valor da Consulta Particular
+                  </label>
+                  <span className="text-2xl font-display font-medium text-[#1C362B]">
+                    R$ {consultaPrice}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="200"
+                  max="1000"
+                  step="25"
+                  value={consultaPrice}
+                  onChange={(e) => setConsultaPrice(Number(e.target.value))}
+                  className="w-full accent-[#1C362B] cursor-pointer h-2 bg-[#EAE3D6] rounded-lg"
+                />
+                <div className="flex justify-between text-[11px] text-[#8C7A65] mt-1 font-mono">
+                  <span>R$ 200</span>
+                  <span>R$ 600</span>
+                  <span>R$ 1.000</span>
+                </div>
+              </div>
+
+              {/* Pacientes por Turno */}
+              <div>
+                <div className="flex justify-between items-baseline mb-3">
+                  <label className="text-sm font-semibold uppercase tracking-wider text-[#1C362B]">
+                    Atendimentos por Turno (4h)
+                  </label>
+                  <span className="text-xl font-display font-medium text-[#1C362B]">
+                    {consultasPorTurno} consultas
+                  </span>
+                </div>
+                <div className="grid grid-cols-5 gap-2">
+                  {[3, 4, 5, 6, 7].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setConsultasPorTurno(num)}
+                      className={`py-3 rounded-xl text-sm font-medium transition-all ${
+                        consultasPorTurno === num
+                          ? 'bg-[#1C362B] text-white shadow-md'
+                          : 'bg-[#FDFBF7] border border-[#EAE3D6] text-[#53655C] hover:border-[#1C362B]/40'
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Turnos por Semana */}
+              <div>
+                <div className="flex justify-between items-baseline mb-3">
+                  <label className="text-sm font-semibold uppercase tracking-wider text-[#1C362B]">
+                    Turnos Semanais
+                  </label>
+                  <span className="text-xl font-display font-medium text-[#1C362B]">
+                    {turnosPorSemana} {turnosPorSemana === 1 ? 'turno' : 'turnos'} / semana
+                  </span>
+                </div>
+                <div className="grid grid-cols-5 gap-2">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setTurnosPorSemana(num)}
+                      className={`py-3 rounded-xl text-sm font-medium transition-all ${
+                        turnosPorSemana === num
+                          ? 'bg-[#1C362B] text-white shadow-md'
+                          : 'bg-[#FDFBF7] border border-[#EAE3D6] text-[#53655C] hover:border-[#1C362B]/40'
+                      }`}
+                    >
+                      {num} {num === 1 ? 'dia' : 'dias'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-2 text-xs text-[#8C7A65] flex items-center space-x-2">
+                <Check className="w-4 h-4 text-[#A67C52] shrink-0" />
+                <span>Base de 4 semanas/mês • Estimativa transparente e sem surpresas</span>
+              </div>
+
+            </div>
+
+            {/* Painel de Resultados */}
+            <div className="lg:col-span-6 space-y-6">
+              
+              {/* Card Destaque de Lucro */}
+              <div className="bg-[#1C362B] text-[#FDFBF7] rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+                
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-[#C9AF96] font-semibold block mb-1">
+                      Lucro Líquido Estimado
+                    </span>
+                    <div className="text-4xl md:text-5xl font-display font-medium text-white tracking-tight">
+                      R$ {lucroEstimado.toLocaleString('pt-BR')}
+                      <span className="text-xs font-light text-[#D3E0D9] block mt-1 font-sans">
+                        / mês no bolso do profissional
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-[#A67C52]/30 border border-[#A67C52]/50 px-3 py-1.5 rounded-full text-xs font-semibold text-[#FDFBF7] shrink-0">
+                    {margemLucro}% de margem
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-white/15 grid grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <span className="text-[#8C9B93] block">Faturamento Bruto</span>
+                    <span className="text-lg font-display font-medium text-white">
+                      R$ {faturamentoBruto.toLocaleString('pt-BR')}
+                    </span>
+                    <span className="text-[11px] text-[#8C9B93] block">({consultasMensais} consultas/mês)</span>
+                  </div>
+                  <div>
+                    <span className="text-[#8C9B93] block">Custo Coworking Angatu</span>
+                    <span className="text-lg font-display font-medium text-[#C9AF96]">
+                      R$ {custoCoworkingRegular.toLocaleString('pt-BR')} <span className="text-xs font-normal text-white/70">/ mês</span>
+                    </span>
+                    <span className="text-[11px] text-[#A67C52] block">
+                      (R$ {custoCoworkingPromo.toLocaleString('pt-BR')} nos 2 primeiros meses)
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-white/15">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full bg-[#A67C52] hover:bg-[#8C653F] text-white font-medium py-4 rounded-2xl text-sm transition-all shadow-lg flex items-center justify-center space-x-2"
+                  >
+                    <span>Agendar Visita e Garantir Turnos</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Card Comparativo com Consultório Tradicional */}
+              <div className="bg-white rounded-3xl p-6 md:p-8 border border-[#EAE3D6] shadow-sm">
+                <div className="flex items-start space-x-3">
+                  <div className="bg-[#A67C52]/10 p-2.5 rounded-2xl text-[#A67C52] shrink-0">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-display font-medium text-[#1C362B]">
+                      Economia Comparativa: R$ {economiaEstimada.toLocaleString('pt-BR')} / mês
+                    </h4>
+                    <p className="text-xs text-[#53655C] font-light leading-relaxed mt-1">
+                      Em um consultório convencional na região nobre de BH, custos com aluguel comercial, condomínio, IPTU, secretária CLT com encargos, luz, água e internet totalizam mais de R$ 9.200/mês — faça chuva ou faça sol. No Angatu, seu custo é proporcional à sua escala.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
       </section>
 
