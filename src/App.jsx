@@ -448,7 +448,7 @@ export default function App() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-[#A67C52] shrink-0" />
-                    <span>Chave PIX: <strong>31 9 9714-1515</strong> (ANGATU)</span>
+                    <span>Sem custos de condomínio, IPTU ou encargos CLT</span>
                   </div>
                 </div>
 
