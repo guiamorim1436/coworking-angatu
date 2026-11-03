@@ -21,7 +21,6 @@ import {
 } from 'lucide-react';
 
 import WalkthroughScroll from './components/WalkthroughScroll';
-import ThreeModelViewer from './components/ThreeModelViewer';
 import PricingCalculator from './components/PricingCalculator';
 
 export default function App() {
@@ -256,24 +255,19 @@ export default function App() {
         </div>
       </section>
 
-      {/* 4. MAQUETE 3D INTERATIVA & GALERIA DE FOTOS */}
+      {/* 4. GALERIA DE FOTOS DOS AMBIENTES */}
       <section className="py-20 bg-[#FAF8F5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-bold uppercase tracking-widest text-[#4A7C59] mb-2 block">
-              Exploração Espacial
+              Galeria de Ambientes
             </span>
             <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#1E3F35]">
               Arquitetura pensada para o acolhimento da infância.
             </h2>
             <p className="text-sm md:text-base text-[#4A5568] mt-3">
-              Explore a maquete 3D procedural do consultório e confira as fotos reais dos ambientes montados no Gutierrez.
+              Confira os ambientes reais do Coworking Angatu montados no Gutierrez, com padrão de acabamento impecável.
             </p>
-          </div>
-
-          {/* 3D Model Procedural Viewer */}
-          <div className="mb-14">
-            <ThreeModelViewer />
           </div>
 
           {/* Photo Gallery Grid */}
