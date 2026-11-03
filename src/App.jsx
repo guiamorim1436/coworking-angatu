@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Baby,
   MapPin,
@@ -13,6 +13,7 @@ import {
 
 export default function App() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+  const [heroIndex, setHeroIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Form State
@@ -26,7 +27,6 @@ export default function App() {
   const ADDRESS_TEXT = "R. Herculano de Freitas, 58 - Sl 407 - Gutierrez, Belo Horizonte - MG, 30441-039";
 
   // Gallery spaces with inverted order (Atendimento & Secretária in 2nd, Consultório Principal in 6th)
-  // Text "Área Clínica & Exame" removed
   const spaces = [
     {
       src: "/photos/recepcao_safari_kids.webp",
@@ -66,6 +66,24 @@ export default function App() {
     }
   ];
 
+  // Auto-play carrossel Hero (5 segundos)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % spaces.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [spaces.length]);
+
+  const handleHeroPrev = (e) => {
+    e?.stopPropagation();
+    setHeroIndex((prev) => (prev - 1 + spaces.length) % spaces.length);
+  };
+
+  const handleHeroNext = (e) => {
+    e?.stopPropagation();
+    setHeroIndex((prev) => (prev + 1) % spaces.length);
+  };
+
   const handleNextPhoto = (e) => {
     e?.stopPropagation();
     setSelectedPhotoIndex((prev) => (prev + 1) % spaces.length);
@@ -91,9 +109,9 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-[#FDFBF7] text-[#1A2621] font-sans antialiased selection:bg-[#284B3D] selection:text-white">
 
-      {/* Header Minimalista */}
+      {/* Header Minimalista - Full Width */}
       <header className="w-full border-b border-[#EAE3D6]/70 bg-[#FDFBF7]/90 backdrop-blur-md sticky top-0 z-40">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 h-20 md:h-24 flex items-center justify-between">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 h-20 md:h-24 flex items-center justify-between">
           <div className="flex flex-col">
             <span className="font-display text-2xl sm:text-3xl font-semibold tracking-[0.24em] text-[#1C362B] uppercase">
               ANGATU
@@ -105,79 +123,116 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero Section Responsiva (Usa todo o espaço horizontal) */}
-      <section className="w-full pt-12 pb-16 md:pt-20 md:pb-28">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
+      {/* Hero Section Responsiva - Full Width com Carrossel */}
+      <section className="w-full pt-10 pb-16 md:pt-16 md:pb-24">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
           
-          <div className="max-w-4xl mb-12 md:mb-16">
-            <span className="text-xs uppercase tracking-[0.3em] font-semibold text-[#8C7A65] block mb-4">
-              Gutierrez • Belo Horizonte
-            </span>
+          <div className="w-full flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-10 md:mb-14">
+            <div className="max-w-4xl">
+              <span className="text-xs uppercase tracking-[0.3em] font-semibold text-[#8C7A65] block mb-3">
+                Gutierrez • Belo Horizonte
+              </span>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-[4.5rem] font-display font-medium text-[#1C362B] leading-[1.1] tracking-[-0.02em]">
-              O consultório pediátrico em seu mais alto padrão.
-            </h1>
+              <h1 className="text-4xl sm:text-6xl lg:text-[4.2rem] font-display font-medium text-[#1C362B] leading-[1.08] tracking-[-0.02em]">
+                O consultório pediátrico em seu mais alto padrão.
+              </h1>
+            </div>
 
-            <p className="mt-6 text-lg sm:text-xl text-[#53655C] font-light leading-relaxed max-w-2xl">
-              25 m² de consultório privativo com luz natural, sala de espera lúdica e secretária dedicada aos seus pacientes. Traga apenas o seu jaleco.
-            </p>
+            <div className="max-w-xl flex flex-col items-start lg:items-end justify-between">
+              <p className="text-base sm:text-lg text-[#53655C] font-light leading-relaxed lg:text-right">
+                25 m² de consultório privativo com luz natural, sala de espera lúdica e secretária dedicada aos seus pacientes. Traga apenas o seu jaleco.
+              </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              {/* Botão Agendar Visita colocado no lugar de Conhecer o Espaço */}
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-sm font-medium tracking-wide px-8 py-4 rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center space-x-2"
-              >
-                <span>Agendar Visita</span>
-                <ArrowRight className="w-4 h-4 text-[#C9AF96]" />
-              </button>
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-sm font-medium tracking-wide px-8 py-4 rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center space-x-2"
+                >
+                  <span>Agendar Visita</span>
+                  <ArrowRight className="w-4 h-4 text-[#C9AF96]" />
+                </button>
 
-              <a
-                href="#ambientes"
-                className="text-sm font-medium text-[#53655C] hover:text-[#1C362B] px-6 py-4 rounded-full transition-colors"
-              >
-                Ver Ambientes ↓
-              </a>
+                <a
+                  href="#ambientes"
+                  className="text-sm font-medium text-[#53655C] hover:text-[#1C362B] px-6 py-4 rounded-full transition-colors"
+                >
+                  Ver Ambientes ↓
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Destaque Fotográfico Full-Width Responsivo */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#EAE3D6] aspect-[16/9] max-h-[640px] w-full">
-            <img
-              src="/photos/recepcao_safari_kids.webp"
-              alt="Espaço Safári Angatu"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1C362B]/85 via-transparent to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8 flex flex-col md:flex-row md:items-end justify-between text-white">
-              <div>
-                <span className="text-xs uppercase tracking-widest text-[#C9AF96] font-semibold block mb-1">
-                  Arquitetura que Acolhe
-                </span>
-                <h2 className="text-xl md:text-2xl font-display font-medium">
-                  Tema Safári contemporâneo com espaço kids e fraldário completo.
-                </h2>
-              </div>
-              
-              <a
-                href={GOOGLE_MAPS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-xs text-[#EAE3D6] hover:text-white underline mt-3 md:mt-0 transition-colors"
+          {/* Carrossel Hero com Todo o Espaço Horizontal e Legenda Elegante */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#EAE3D6] aspect-[16/9] md:aspect-[21/9] min-h-[380px] max-h-[680px] w-full group">
+            {spaces.map((item, idx) => (
+              <div
+                key={idx}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                  idx === heroIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                }`}
               >
-                <span>Ver localização no Google Maps</span>
-                <ExternalLink className="w-3.5 h-3.5 ml-1" />
-              </a>
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="w-full h-full object-cover transform duration-1000 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1C362B]/90 via-[#1C362B]/30 to-transparent" />
+              </div>
+            ))}
+
+            {/* Setas de Navegação do Carrossel Hero */}
+            <button
+              onClick={handleHeroPrev}
+              className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white text-white hover:text-[#1C362B] p-3 rounded-full backdrop-blur-md transition-all opacity-80 hover:opacity-100 shadow-lg"
+              title="Ambiente Anterior"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleHeroNext}
+              className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white text-white hover:text-[#1C362B] p-3 rounded-full backdrop-blur-md transition-all opacity-80 hover:opacity-100 shadow-lg"
+              title="Próximo Ambiente"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Apenas Legenda Bonita & Indicador de Slides (Sem link do Google Maps) */}
+            <div className="absolute bottom-6 md:bottom-8 left-6 md:left-10 right-6 md:right-10 z-20 flex flex-col md:flex-row md:items-end justify-between text-white gap-4">
+              <div className="max-w-2xl">
+                <span className="text-xs uppercase tracking-[0.25em] text-[#C9AF96] font-semibold block mb-1">
+                  {spaces[heroIndex].tag}
+                </span>
+                <h2 className="text-2xl md:text-3xl font-display font-medium text-white tracking-tight">
+                  {spaces[heroIndex].title}
+                </h2>
+                <p className="text-xs md:text-sm text-[#EAE3D6] font-light mt-1 max-w-xl leading-relaxed">
+                  {spaces[heroIndex].desc}
+                </p>
+              </div>
+
+              {/* Indicadores Minimalistas de Slide */}
+              <div className="flex items-center space-x-2">
+                {spaces.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setHeroIndex(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      idx === heroIndex ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'
+                    }`}
+                    title={`Ir para foto ${idx + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* Os 3 Pilares com Grid Fluido */}
+      {/* Os 3 Pilares com Grid Fluido Full-Width */}
       <section className="w-full py-20 md:py-28 border-t border-[#EAE3D6]/70 bg-white">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
             
             <div className="space-y-4">
               <span className="text-xs font-mono font-medium text-[#8C7A65] tracking-widest block">
@@ -219,9 +274,9 @@ export default function App() {
         </div>
       </section>
 
-      {/* Galeria de Fotos Arquitetônica com Setas Interativas */}
+      {/* Galeria de Fotos Arquitetônica Full-Width */}
       <section id="ambientes" className="w-full py-24 bg-[#FDFBF7]">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <div>
               <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8C7A65] block mb-2">
@@ -336,109 +391,119 @@ export default function App() {
         </div>
       )}
 
-      {/* Condições & Exclusividade */}
+      {/* Condições & Exclusividade - Full Width Grid */}
       <section className="w-full py-20 md:py-28 bg-[#F5F0E6] border-t border-[#EAE3D6]">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 text-center">
-          <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8C7A65] block mb-3">
-            Condições Comerciais
-          </span>
-
-          <h2 className="text-3xl md:text-5xl font-display font-medium text-[#1C362B] tracking-tight">
-            Transparência e previsibilidade para a sua clínica.
-          </h2>
-
-          <p className="mt-4 text-base text-[#53655C] font-light max-w-xl mx-auto">
-            Sem condomínio, sem IPTU e sem dor de cabeça de gestão. Você investe apenas nos turnos semanais que utiliza.
-          </p>
-
-          {/* Card de Valores Sofisticado */}
-          <div className="mt-12 bg-white rounded-3xl p-8 md:p-12 border border-[#EAE3D6] shadow-xl text-left max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between pb-6 border-b border-[#EAE3D6]">
-              <div>
-                <span className="text-xs uppercase tracking-widest text-[#A67C52] font-semibold block mb-1">
-                  Condição de Boas-Vindas
-                </span>
-                <h3 className="text-3xl font-display font-medium text-[#1C362B]">
-                  R$ 500 <span className="text-sm font-normal text-[#68776F]">/ mês por turno</span>
-                </h3>
-                <p className="text-xs text-[#68776F] mt-1">Válido para os 2 primeiros meses de atendimento.</p>
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div className="lg:col-span-5 text-left">
+              <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8C7A65] block mb-3">
+                Condições Comerciais
+              </span>
+              <h2 className="text-3xl md:text-5xl font-display font-medium text-[#1C362B] tracking-tight leading-[1.15]">
+                Transparência e previsibilidade para a sua clínica.
+              </h2>
+              <p className="mt-5 text-base text-[#53655C] font-light leading-relaxed">
+                Sem condomínio, sem IPTU e sem dor de cabeça de gestão. Você investe apenas nos turnos semanais que utiliza, com secretária e estrutura completa inclusas.
+              </p>
+              <div className="mt-6 inline-flex items-center px-4 py-2.5 rounded-full bg-[#1C362B]/5 border border-[#1C362B]/10 text-xs text-[#1C362B] font-medium">
+                Turnos limitados para preservar a tranquilidade.
               </div>
-              <div className="mt-4 sm:mt-0 sm:text-right">
-                <span className="text-xs uppercase tracking-widest text-[#68776F] block mb-1">
-                  A partir do 3º mês
-                </span>
-                <div className="text-2xl font-display font-medium text-[#1C362B]">
-                  R$ 1.000 <span className="text-xs font-normal text-[#68776F]">/ mês</span>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="bg-white rounded-3xl p-8 md:p-12 border border-[#EAE3D6] shadow-xl text-left w-full">
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between pb-6 border-b border-[#EAE3D6] gap-4">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-[#A67C52] font-semibold block mb-1">
+                      Condição de Boas-Vindas
+                    </span>
+                    <h3 className="text-3xl sm:text-4xl font-display font-medium text-[#1C362B]">
+                      R$ 500 <span className="text-sm font-normal text-[#68776F]">/ mês por turno</span>
+                    </h3>
+                    <p className="text-xs text-[#68776F] mt-1">Válido para os 2 primeiros meses de atendimento.</p>
+                  </div>
+                  <div className="sm:text-right">
+                    <span className="text-xs uppercase tracking-widest text-[#68776F] block mb-1">
+                      A partir do 3º mês
+                    </span>
+                    <div className="text-2xl sm:text-3xl font-display font-medium text-[#1C362B]">
+                      R$ 1.000 <span className="text-xs font-normal text-[#68776F]">/ mês</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[#53655C]">
+                  <div className="flex items-center space-x-2">
+                    <Check className="w-4 h-4 text-[#A67C52] shrink-0" />
+                    <span>Secretária dedicada inclusa no atendimento</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Check className="w-4 h-4 text-[#A67C52] shrink-0" />
+                    <span>Internet Wi-Fi de alta velocidade, água e luz</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Check className="w-4 h-4 text-[#A67C52] shrink-0" />
+                    <span>Estacionamento rotativo no edifício para os pacientes</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Check className="w-4 h-4 text-[#A67C52] shrink-0" />
+                    <span>Chave PIX: <strong>31 9 9714-1515</strong> (ANGATU)</span>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-[#EAE3D6] flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xs text-[#8C7A65]">Acolhimento humanizado para mães e crianças.</span>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full sm:w-auto bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-xs font-semibold uppercase tracking-wider px-8 py-4 rounded-full transition-all text-center shadow-md hover:shadow-lg"
+                  >
+                    Agendar Visita
+                  </button>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 space-y-3 text-xs text-[#53655C]">
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#A67C52]" />
-                <span>Secretária dedicada inclusa no atendimento</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#A67C52]" />
-                <span>Internet Wi-Fi de alta velocidade, luz, água e limpeza diária</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#A67C52]" />
-                <span>Estacionamento rotativo no edifício para os pacientes</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#A67C52]" />
-                <span>Chave PIX: <strong>31 9 9714-1515</strong> (ANGATU)</span>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-[#EAE3D6] flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span className="text-xs text-[#8C7A65]">Turnos limitados para preservar a tranquilidade.</span>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full sm:w-auto bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-full transition-all text-center"
-              >
-                Agendar Visita
-              </button>
-            </div>
           </div>
         </div>
       </section>
 
       {/* Convite Pessoal & Endereço com Hyperlink Google Maps */}
       <section className="w-full py-24 bg-[#1C362B] text-[#FDFBF7] text-center">
-        <div className="w-full max-w-4xl mx-auto px-6">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C9AF96] font-semibold block mb-3">
-            Visita Presencial
-          </span>
-          <h2 className="text-3xl md:text-5xl font-display font-medium tracking-tight mb-4">
-            Venha tomar um café e vivenciar o espaço.
-          </h2>
-          <p className="text-sm md:text-base text-[#D3E0D9] font-light max-w-lg mx-auto mb-8">
-            Conheça o consultório pessoalmente antes de tomar sua decisão. Estamos à disposição para apresentar cada ambiente no Gutierrez.
-          </p>
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+          <div className="max-w-4xl mx-auto">
+            <span className="text-xs uppercase tracking-[0.25em] text-[#C9AF96] font-semibold block mb-3">
+              Visita Presencial
+            </span>
+            <h2 className="text-3xl md:text-5xl font-display font-medium tracking-tight mb-4">
+              Venha tomar um café e vivenciar o espaço.
+            </h2>
+            <p className="text-sm md:text-base text-[#D3E0D9] font-light max-w-lg mx-auto mb-8">
+              Conheça o consultório pessoalmente antes de tomar sua decisão. Estamos à disposição para apresentar cada ambiente no Gutierrez.
+            </p>
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center space-x-2 bg-[#A67C52] hover:bg-[#8C653F] text-white text-xs font-semibold uppercase tracking-widest px-8 py-4 rounded-full transition-all shadow-xl"
-          >
-            <MessageCircle className="w-4 h-4" />
-            <span>Agendar Minha Visita</span>
-          </button>
-
-          {/* Hyperlink do Google Maps no Endereço Completo */}
-          <div className="mt-14 pt-8 border-t border-white/10 text-xs text-[#D3E0D9]">
-            <a
-              href={GOOGLE_MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center space-x-2 text-[#C9AF96] hover:text-white transition-colors underline underline-offset-4"
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center space-x-2 bg-[#A67C52] hover:bg-[#8C653F] text-white text-xs font-semibold uppercase tracking-widest px-8 py-4 rounded-full transition-all shadow-xl"
             >
-              <MapPin className="w-4 h-4 shrink-0 text-[#C9AF96]" />
-              <span className="font-medium">{ADDRESS_TEXT}</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-            <p className="text-[#8C9B93] mt-2">Coworking Pediátrico Angatu • WhatsApp: (31) 9 9714-1515</p>
+              <MessageCircle className="w-4 h-4" />
+              <span>Agendar Minha Visita</span>
+            </button>
+
+            {/* Hyperlink do Google Maps no Endereço Completo */}
+            <div className="mt-14 pt-8 border-t border-white/10 text-xs text-[#D3E0D9]">
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center space-x-2 text-[#C9AF96] hover:text-white transition-colors underline underline-offset-4"
+              >
+                <MapPin className="w-4 h-4 shrink-0 text-[#C9AF96]" />
+                <span className="font-medium">{ADDRESS_TEXT}</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+              <p className="text-[#8C9B93] mt-2">Coworking Pediátrico Angatu • WhatsApp: (31) 9 9714-1515</p>
+            </div>
           </div>
         </div>
       </section>
