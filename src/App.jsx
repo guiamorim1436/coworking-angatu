@@ -3,18 +3,30 @@ import {
   Baby,
   MapPin,
   MessageCircle,
-  Sparkles,
   ArrowRight,
-  ArrowUpRight,
-  ShieldCheck,
-  Check
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  X
 } from 'lucide-react';
 
 export default function App() {
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const WHATSAPP_URL = "https://wa.me/5531997141515?text=" + encodeURIComponent("Olá! Gostaria de agendar uma visita para conhecer o Coworking Pediátrico Angatu no Gutierrez.");
+  // Form State
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    especialidade: ''
+  });
 
+  const GOOGLE_MAPS_URL = "https://www.google.com/maps/search/?api=1&query=R.+Herculano+de+Freitas,+58+-+Sl+407+-+Gutierrez,+Belo+Horizonte+-+MG,+30441-039";
+  const ADDRESS_TEXT = "R. Herculano de Freitas, 58 - Sl 407 - Gutierrez, Belo Horizonte - MG, 30441-039";
+
+  // Gallery spaces with inverted order (Atendimento & Secretária in 2nd, Consultório Principal in 6th)
+  // Text "Área Clínica & Exame" removed
   const spaces = [
     {
       src: "/photos/recepcao_safari_kids.webp",
@@ -23,10 +35,10 @@ export default function App() {
       desc: "Arquitetura lúdica com climatização, brinquedoteca e fraldário estruturado."
     },
     {
-      src: "/photos/consultorio_visao_ampla.webp",
-      title: "Consultório Principal",
-      tag: "25 m² • Luz Natural",
-      desc: "Paredes em vidro, vista panorâmica e banheiro privativo para o médico."
+      src: "/photos/recepcao_hall.webp",
+      title: "Atendimento & Secretária",
+      tag: "Exclusividade",
+      desc: "Recepção personalizada para um único consultório em funcionamento."
     },
     {
       src: "/photos/consultorio_mesa.webp",
@@ -36,68 +48,85 @@ export default function App() {
     },
     {
       src: "/photos/consultorio_maca.webp",
-      title: "Área Clínica & Exame",
-      tag: "Equipado",
+      title: "Maca Pediátrica",
+      tag: "Estrutura Clínica",
       desc: "Maca pediátrica higienizada, balança digital e Smart TV integrada."
     },
     {
       src: "/photos/copa_conforto.webp",
       title: "Copa Reservada",
       tag: "Praticidade",
-      desc: "Espaço privativo com café, frigobar e micro-ondas para o seu dia a dia."
+      desc: "Espaço privativo com cafeteira, frigobar e micro-ondas para sua comodidade."
     },
     {
-      src: "/photos/recepcao_hall.webp",
-      title: "Atendimento & Secretária",
-      tag: "Exclusividade",
-      desc: "Recepção personalizada para um único consultório em funcionamento."
+      src: "/photos/consultorio_visao_ampla.webp",
+      title: "Consultório Principal",
+      tag: "25 m² • Luz Natural",
+      desc: "Paredes em vidro, vista panorâmica e banheiro privativo para o médico."
     }
   ];
 
-  return (
-    <div className="min-h-screen bg-[#FDFBF7] text-[#1A2621] font-sans antialiased selection:bg-[#284B3D] selection:text-white">
+  const handleNextPhoto = (e) => {
+    e?.stopPropagation();
+    setSelectedPhotoIndex((prev) => (prev + 1) % spaces.length);
+  };
 
-      {/* Header Minimalista Sofisticado */}
-      <header className="border-b border-[#EAE3D6]/70 bg-[#FDFBF7]/85 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 h-24 flex items-center justify-between">
+  const handlePrevPhoto = (e) => {
+    e?.stopPropagation();
+    setSelectedPhotoIndex((prev) => (prev - 1 + spaces.length) % spaces.length);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.nome.trim()) return;
+
+    // Sou Fulano, [especialidade], gostaria de conhecer o espaço. Meu email é [email}
+    const message = `Sou ${formData.nome.trim()}, ${formData.especialidade.trim() || 'profissional de saúde'}, gostaria de conhecer o espaço. Meu email é ${formData.email.trim() || 'não informado'}`;
+    const whatsappUrl = `https://wa.me/5531997141515?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, '_blank');
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-[#FDFBF7] text-[#1A2621] font-sans antialiased selection:bg-[#284B3D] selection:text-white">
+
+      {/* Header Minimalista (Sem "Contorno c/ Raja", Sem "Gutierrez" na logo, Sem botão Agendar Visita) */}
+      <header className="w-full border-b border-[#EAE3D6]/70 bg-[#FDFBF7]/90 backdrop-blur-md sticky top-0 z-40">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 h-24 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="font-display text-2xl font-semibold tracking-[0.22em] text-[#1C362B] uppercase">
+            <span className="font-display text-2xl sm:text-3xl font-semibold tracking-[0.24em] text-[#1C362B] uppercase">
               ANGATU
             </span>
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#8C7A65] font-medium mt-0.5">
-              Coworking Pediátrico • Gutierrez
+              Coworking Pediátrico
             </span>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <span className="hidden md:inline-flex items-center text-xs tracking-wider text-[#68776F] uppercase">
-              <MapPin className="w-3.5 h-3.5 text-[#A67C52] mr-1.5" />
-              Contorno c/ Raja
-            </span>
-
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-semibold tracking-wider uppercase text-[#1C362B] border border-[#1C362B]/30 hover:border-[#1C362B] hover:bg-[#1C362B] hover:text-white px-5 py-2.5 rounded-full transition-all duration-300"
-            >
-              Agendar Visita
-            </a>
-          </div>
+          {/* Endereço clicável direto no header */}
+          <a
+            href={GOOGLE_MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center text-xs tracking-wider text-[#68776F] hover:text-[#1C362B] transition-colors"
+          >
+            <MapPin className="w-3.5 h-3.5 text-[#A67C52] mr-1.5 shrink-0" />
+            <span className="hidden sm:inline">Gutierrez, Belo Horizonte</span>
+            <span className="sm:hidden">BH</span>
+          </a>
         </div>
       </header>
 
-      {/* Hero Section Editorial */}
-      <section className="pt-16 pb-20 md:pt-24 md:pb-32">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* Hero Section Responsiva (Usa todo o espaço horizontal) */}
+      <section className="w-full pt-12 pb-16 md:pt-20 md:pb-28">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
           
-          {/* Top Title Block */}
-          <div className="max-w-3xl mb-12 md:mb-16">
+          <div className="max-w-4xl mb-12 md:mb-16">
             <span className="text-xs uppercase tracking-[0.3em] font-semibold text-[#8C7A65] block mb-4">
               Gutierrez • Belo Horizonte
             </span>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-[4.2rem] font-display font-medium text-[#1C362B] leading-[1.12] tracking-[-0.02em]">
+            <h1 className="text-4xl sm:text-6xl lg:text-[4.5rem] font-display font-medium text-[#1C362B] leading-[1.1] tracking-[-0.02em]">
               O consultório pediátrico em seu mais alto padrão.
             </h1>
 
@@ -106,15 +135,14 @@ export default function App() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* Botão Agendar Visita colocado no lugar de Conhecer o Espaço */}
+              <button
+                onClick={() => setIsModalOpen(true)}
                 className="bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-sm font-medium tracking-wide px-8 py-4 rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center space-x-2"
               >
-                <span>Conhecer o Espaço</span>
+                <span>Agendar Visita</span>
                 <ArrowRight className="w-4 h-4 text-[#C9AF96]" />
-              </a>
+              </button>
 
               <a
                 href="#ambientes"
@@ -125,14 +153,14 @@ export default function App() {
             </div>
           </div>
 
-          {/* Destaque Fotográfico Editorial */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#EAE3D6] aspect-[16/9] max-h-[620px] w-full">
+          {/* Destaque Fotográfico Full-Width Responsivo */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#EAE3D6] aspect-[16/9] max-h-[640px] w-full">
             <img
               src="/photos/recepcao_safari_kids.webp"
               alt="Espaço Safári Angatu"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1C362B]/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1C362B]/85 via-transparent to-transparent" />
             <div className="absolute bottom-8 left-8 right-8 flex flex-col md:flex-row md:items-end justify-between text-white">
               <div>
                 <span className="text-xs uppercase tracking-widest text-[#C9AF96] font-semibold block mb-1">
@@ -142,18 +170,25 @@ export default function App() {
                   Tema Safári contemporâneo com espaço kids e fraldário completo.
                 </h2>
               </div>
-              <span className="text-xs text-[#EAE3D6] font-light mt-2 md:mt-0">
-                Av. do Contorno esquina com Raja Gabaglia
-              </span>
+              
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-xs text-[#EAE3D6] hover:text-white underline mt-3 md:mt-0 transition-colors"
+              >
+                <span>Ver localização no Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5 ml-1" />
+              </a>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* Os 3 Pilares de Sofisticação */}
-      <section className="py-20 md:py-28 border-t border-[#EAE3D6]/70 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* Os 3 Pilares com Grid Fluido */}
+      <section className="w-full py-20 md:py-28 border-t border-[#EAE3D6]/70 bg-white">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
             
             <div className="space-y-4">
@@ -196,9 +231,9 @@ export default function App() {
         </div>
       </section>
 
-      {/* Galeria de Fotos Arquitetônica */}
-      <section id="ambientes" className="py-24 bg-[#FDFBF7]">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* Galeria de Fotos Arquitetônica com Setas Interativas */}
+      <section id="ambientes" className="w-full py-24 bg-[#FDFBF7]">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <div>
               <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8C7A65] block mb-2">
@@ -209,7 +244,7 @@ export default function App() {
               </h2>
             </div>
             <p className="text-sm text-[#53655C] font-light max-w-sm mt-3 md:mt-0">
-              Fotos reais do consultório e áreas sociais no Gutierrez. Clique para ampliar.
+              Fotos reais do consultório e áreas sociais no Gutierrez. Clique em qualquer foto para navegar com as setas.
             </p>
           </div>
 
@@ -217,7 +252,7 @@ export default function App() {
             {spaces.map((item, idx) => (
               <div
                 key={idx}
-                onClick={() => setSelectedPhoto(item)}
+                onClick={() => setSelectedPhotoIndex(idx)}
                 className="group cursor-pointer space-y-3"
               >
                 <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-[#EAE3D6] border border-[#EAE3D6]/80 shadow-sm transition-all duration-500 group-hover:shadow-xl">
@@ -245,20 +280,42 @@ export default function App() {
         </div>
       </section>
 
-      {/* Lightbox Modal Minimalista */}
-      {selectedPhoto && (
+      {/* Lightbox Modal com Setas de Navegação (Prev / Next) */}
+      {selectedPhotoIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-[#12231C]/90 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
-          onClick={() => setSelectedPhoto(null)}
+          className="fixed inset-0 z-50 bg-[#12231C]/92 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+          onClick={() => setSelectedPhotoIndex(null)}
         >
+          {/* Seta Esquerda */}
+          <button
+            onClick={handlePrevPhoto}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 bg-white/20 hover:bg-white text-white hover:text-[#1C362B] p-3 rounded-full backdrop-blur-md transition-all shadow-xl"
+            title="Foto Anterior"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Seta Direita */}
+          <button
+            onClick={handleNextPhoto}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 bg-white/20 hover:bg-white text-white hover:text-[#1C362B] p-3 rounded-full backdrop-blur-md transition-all shadow-xl"
+            title="Próxima Foto"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
           <div
-            className="max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/20"
+            className="max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/20 relative"
             onClick={e => e.stopPropagation()}
           >
             <div className="relative aspect-[16/10] bg-black">
-              <img src={selectedPhoto.src} alt={selectedPhoto.title} className="w-full h-full object-contain" />
+              <img
+                src={spaces[selectedPhotoIndex].src}
+                alt={spaces[selectedPhotoIndex].title}
+                className="w-full h-full object-contain"
+              />
               <button
-                onClick={() => setSelectedPhoto(null)}
+                onClick={() => setSelectedPhotoIndex(null)}
                 className="absolute top-4 right-4 bg-black/60 hover:bg-black text-white w-9 h-9 rounded-full flex items-center justify-center text-xs"
               >
                 ✕
@@ -267,27 +324,33 @@ export default function App() {
             <div className="p-6 md:p-8 flex items-center justify-between">
               <div>
                 <span className="text-xs uppercase tracking-widest text-[#8C7A65] block mb-1">
-                  {selectedPhoto.tag}
+                  {spaces[selectedPhotoIndex].tag} ({selectedPhotoIndex + 1} de {spaces.length})
                 </span>
-                <h3 className="text-xl font-display font-medium text-[#1C362B]">{selectedPhoto.title}</h3>
-                <p className="text-xs text-[#53655C] mt-1">{selectedPhoto.desc}</p>
+                <h3 className="text-xl font-display font-medium text-[#1C362B]">
+                  {spaces[selectedPhotoIndex].title}
+                </h3>
+                <p className="text-xs text-[#53655C] mt-1">
+                  {spaces[selectedPhotoIndex].desc}
+                </p>
               </div>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs uppercase tracking-wider font-semibold text-[#1C362B] underline"
+
+              <button
+                onClick={() => {
+                  setSelectedPhotoIndex(null);
+                  setIsModalOpen(true);
+                }}
+                className="text-xs uppercase tracking-wider font-semibold text-[#1C362B] underline shrink-0 ml-4"
               >
                 Agendar Visita ➔
-              </a>
+              </button>
             </div>
           </div>
         </div>
       )}
 
       {/* Condições & Exclusividade */}
-      <section className="py-20 md:py-28 bg-[#F5F0E6] border-t border-[#EAE3D6]">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <section className="w-full py-20 md:py-28 bg-[#F5F0E6] border-t border-[#EAE3D6]">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 text-center">
           <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8C7A65] block mb-3">
             Condições Comerciais
           </span>
@@ -343,22 +406,20 @@ export default function App() {
 
             <div className="mt-8 pt-6 border-t border-[#EAE3D6] flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-xs text-[#8C7A65]">Turnos limitados para preservar a tranquilidade.</span>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setIsModalOpen(true)}
                 className="w-full sm:w-auto bg-[#1C362B] hover:bg-[#12231C] text-[#FDFBF7] text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-full transition-all text-center"
               >
-                Consultar Turnos Livres
-              </a>
+                Agendar Visita
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Convite Pessoal & Contato */}
-      <section className="py-24 bg-[#1C362B] text-[#FDFBF7] text-center">
-        <div className="max-w-3xl mx-auto px-6">
+      {/* Convite Pessoal & Endereço com Hyperlink Google Maps */}
+      <section className="w-full py-24 bg-[#1C362B] text-[#FDFBF7] text-center">
+        <div className="w-full max-w-4xl mx-auto px-6">
           <span className="text-xs uppercase tracking-[0.25em] text-[#C9AF96] font-semibold block mb-3">
             Visita Presencial
           </span>
@@ -369,34 +430,130 @@ export default function App() {
             Conheça o consultório pessoalmente antes de tomar sua decisão. Estamos à disposição para apresentar cada ambiente no Gutierrez.
           </p>
 
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center space-x-2 bg-[#A67C52] hover:bg-[#8C653F] text-white text-xs font-semibold uppercase tracking-widest px-8 py-4 rounded-full transition-all shadow-xl"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>Falar com a Coordenação no WhatsApp</span>
-          </a>
+            <span>Agendar Minha Visita</span>
+          </button>
 
-          <div className="mt-14 pt-8 border-t border-white/10 text-xs text-[#8C9B93] space-y-1">
-            <p>📍 Av. do Contorno esquina com Raja Gabaglia • Bairro Gutierrez, Belo Horizonte - MG</p>
-            <p>Coworking Pediátrico Angatu • WhatsApp: (31) 9 9714-1515</p>
+          {/* Hyperlink do Google Maps no Endereço Completo */}
+          <div className="mt-14 pt-8 border-t border-white/10 text-xs text-[#D3E0D9]">
+            <a
+              href={GOOGLE_MAPS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center space-x-2 text-[#C9AF96] hover:text-white transition-colors underline underline-offset-4"
+            >
+              <MapPin className="w-4 h-4 shrink-0 text-[#C9AF96]" />
+              <span className="font-medium">{ADDRESS_TEXT}</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <p className="text-[#8C9B93] mt-2">Coworking Pediátrico Angatu • WhatsApp: (31) 9 9714-1515</p>
           </div>
         </div>
       </section>
 
-      {/* Floating WhatsApp Action */}
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#1EBE5D] text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 transition-all hover:scale-105"
-        title="Falar no WhatsApp"
+      {/* Modal / Dialog de Agendamento (Nome, Email, Especialidade -> Redirecionamento WhatsApp) */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-[#12231C]/85 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-[#EAE3D6] relative"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-5 right-5 text-[#8C7A65] hover:text-[#1C362B] p-1 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#8C7A65] block mb-1">
+                Agendamento de Visita
+              </span>
+              <h3 className="text-2xl font-display font-medium text-[#1C362B]">
+                Conheça o Coworking Angatu
+              </h3>
+              <p className="text-xs text-[#53655C] mt-1.5 font-light">
+                Informe seus dados abaixo para conectar diretamente com nossa coordenação no WhatsApp.
+              </p>
+            </div>
+
+            <form onSubmit={handleFormSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1C362B] mb-1.5">
+                  Seu Nome
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Dra. Mariana ou Dr. Lucas"
+                  value={formData.nome}
+                  onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE3D6] bg-[#FDFBF7] text-sm text-[#1C362B] focus:outline-none focus:ring-2 focus:ring-[#1C362B]/20"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1C362B] mb-1.5">
+                  Especialidade
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Pediatria Geral, Fonoaudiologia, Psicologia..."
+                  value={formData.especialidade}
+                  onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE3D6] bg-[#FDFBF7] text-sm text-[#1C362B] focus:outline-none focus:ring-2 focus:ring-[#1C362B]/20"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1C362B] mb-1.5">
+                  Seu E-mail
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="exemplo@medico.com.br"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE3D6] bg-[#FDFBF7] text-sm text-[#1C362B] focus:outline-none focus:ring-2 focus:ring-[#1C362B]/20"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full bg-[#1C362B] hover:bg-[#12231C] text-white font-medium py-3.5 rounded-xl text-sm transition-all shadow-md flex items-center justify-center space-x-2"
+                >
+                  <MessageCircle className="w-4 h-4 text-[#C9AF96]" />
+                  <span>Continuar no WhatsApp</span>
+                </button>
+              </div>
+
+              <p className="text-[11px] text-center text-[#8C7A65] pt-1">
+                Atendimento rápido direto com a equipe Angatu.
+              </p>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Floating WhatsApp Action Button */}
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#1EBE5D] text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 transition-all hover:scale-105"
+        title="Agendar Visita no WhatsApp"
       >
         <MessageCircle className="w-5 h-5" />
         <span className="hidden md:inline text-xs font-medium pr-1">Agendar Visita</span>
-      </a>
+      </button>
 
     </div>
   );
